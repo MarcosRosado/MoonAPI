@@ -14,10 +14,10 @@ class DbConnect{
     }
 
     // recebe o banco de dados a ser acessado e retorna uma conexão
-    function connect($dns){
+    function connect(){
         include_once dirname(__FILE__).'/Constants.php';
         try {
-            $this->con = new PDO($dns, DB_USERNAME, DB_PASSWORD);
+            $this->con = new PDO(DNS, DB_USERNAME, DB_PASSWORD);
         }
         catch (PDOException $e){
             return null;
@@ -26,19 +26,6 @@ class DbConnect{
 
     }
 
-    // FIXME alterar esse trecho em caso de alteração no servidor
-    //se conecta ao banco de dados de usuarios
-    function connect_users(){
-        include_once dirname(__FILE__).'/Constants.php';
-        try {
-            $this->con = new PDO('mysql:dbname=claud347_gerenciausers;host=localhost', DB_USERNAME, DB_PASSWORD);
-        }
-        catch (PDOException $e){
-            echo "error connection to database";
-            return null;
-        }
-        return $this->con;
-    }
 
 
 }
