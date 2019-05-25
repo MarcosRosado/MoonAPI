@@ -1,4 +1,4 @@
 RewriteEngine On
 
-RewriteRule ^index\.html$ /MoonAPI/LoginPage [R=301,L]
+RewriteRule ^index\.html$ /MoonProject/LoginPage [R=301,L]
 RewriteRule ^(.*)/index\.html$ /$1/ [R=301,L]

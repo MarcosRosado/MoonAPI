@@ -166,9 +166,9 @@ $app->get('/getDeviceShareId', function (Request $request, Response $response){
 
 
 // atualiza o shareID do dispositivo
-$app->patch('/updateDeviceShareId', function (Request $request, Response $response){
+$app->post('/updateDeviceShareId', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('idUsuario','nomeDevice'))){
-        $requestData = $request->getQueryParams();
+        $requestData = $request->getParsedBody();
 
         $db = new DbOperations();
         $responseData = array();
@@ -196,7 +196,7 @@ $app->patch('/updateDeviceShareId', function (Request $request, Response $respon
 
 // cadastra um novo dispositivo no banco de dados
 $app->post('/inserirDado', function (Request $request, Response $response){
-    if (isTheseParametersAvailable(array('hashDevice', 'valor', 'tipoSensor'))){
+    if (isTheseParametersAvailable(array('hashDevice', 'valor', 'tipoSensor', 'tag'))){
         $requestData = $request->getParsedBody();
 
         $db = new DbOperations();
@@ -206,8 +206,9 @@ $app->post('/inserirDado', function (Request $request, Response $response){
         $hashDevice = $requestData['hashDevice'];
         $valor = $requestData['valor'];
         $tipoSensor = $requestData['tipoSensor'];
+        $tag = $requestData['tag'];
 
-        $result = $db->inserirDados($hashDevice, $valor, $tipoSensor);
+        $result = $db->inserirDados($hashDevice, $valor, $tipoSensor, $tag);
 
         if ($result == ERRO_BUSCA){
             $responseData['response'] = BAD_REQUEST;
@@ -223,30 +224,6 @@ $app->post('/inserirDado', function (Request $request, Response $response){
     }
 });
 
-
-//function to check parameters
-function isTheseParametersAvailable($required_fields)
-{
-    $error = false;
-    $error_fields = "";
-    $request_params = $_REQUEST;
-
-    foreach ($required_fields as $field) {
-        if (!isset($request_params[$field]) || strlen(trim($request_params[$field])) <= 0) {
-            $error = true;
-            $error_fields .= $field . ', ';
-        }
-    }
-
-    if ($error) {
-        $response = array();
-        $response["error"] = true;
-        $response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
-        echo json_encode($response);
-        return false;
-    }
-    return true;
-}
 
 // recupera o shareID do dispositivo
 $app->get('/getNomeUsuario', function (Request $request, Response $response){
@@ -302,6 +279,58 @@ $app->get('/getDispositivos', function (Request $request, Response $response){
 
 });
 
+// recupera o shareID do dispositivo
+$app->get('/getDados', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('idUsuario', 'shareId'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $idUsuario = $headers['idUsuario'];
+        $sharedId = $headers['shareId'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->listarDados($idUsuario, $sharedId);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro busca";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+    }
+
+});
+
+
+//function to check parameters
+function isTheseParametersAvailable($required_fields)
+{
+    $error = false;
+    $error_fields = "";
+    $request_params = $_REQUEST;
+
+    foreach ($required_fields as $field) {
+        if (!isset($request_params[$field]) || strlen(trim($request_params[$field])) <= 0) {
+            $error = true;
+            $error_fields .= $field . ', ';
+        }
+    }
+
+    if ($error) {
+        $response = array();
+        $response["error"] = true;
+        $response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
+        echo json_encode($response);
+        return false;
+    }
+    return true;
+}
 
 
 $app->run();

@@ -2,28 +2,27 @@
 /**
  * Created by PhpStorm.
  * User: marco
- * Date: 11-Dec-18
- * Time: 1:12 AM
- * cadastro de produtos
+ * Date: 22-Nov-18
+ * Time: 9:35 PM
  */
 
 require_once "../../includes/Constants.php";
 
-// recupera os dados da sessão para utilizar a API
-session_start();
+$email = $_POST['email'];
+$senha = $_POST['senha'];
+$nome = $_POST['nome'];
 
-$idUsuario = $_SESSION['idUsuario'];
-$deviceID = $_POST['device'];
 
 
 // chama a API com os parametros
 try{
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL,API_LOCAL."updateDeviceShareId");
+    curl_setopt($ch, CURLOPT_URL,API_LOCAL."cadastroUsuario");
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS,
-        "idUsuario=".$idUsuario."&".
-        "nomeDevice=".$deviceID);
+        "nome=".$nome."&".
+        "email=".$email."&".
+        "senha=".$senha);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
@@ -34,3 +33,4 @@ try{
     echo $e;
     echo "Erro";
 }
+

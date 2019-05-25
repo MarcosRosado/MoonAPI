@@ -38,7 +38,6 @@
                 data:{"login":$(input[0]).val(),"senha":$(input[1]).val()},
                 success: function(result){
                     const response = jQuery.parseJSON(result);
-                    console.log(response);
                     if(response["response"] == 200 ){
                             window.location.href = "../SistemaWeb/index.html";
                     }

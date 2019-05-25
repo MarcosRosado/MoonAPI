@@ -212,16 +212,18 @@
             }
         }
 
-        function inserirDados ( $hashDevice, $valor, $tipoSensor){
+        function inserirDados ( $hashDevice, $valor, $tipoSensor, $tag){
 
             // insere os dados no sistema
             $time = mktime();
-            $stmt = $this->con->prepare('INSERT INTO dados (HashKey_device, valor, tipoSensor, time)
-            VALUES (:hashDevice, :valor, :tipoSensor, :hora)');
+            $stmt = $this->con->prepare('INSERT INTO dados (HashKey_device, valor, tipoSensor, time, tag)
+            VALUES (:hashDevice, :valor, :tipoSensor, :hora, :tag)');
             $stmt->bindValue(':hashDevice', $hashDevice);
             $stmt->bindValue(':valor', $valor);
             $stmt->bindValue(':tipoSensor', $tipoSensor);
             $stmt->bindValue(':hora', $time);
+            $stmt->bindValue(':tag', $tag);
+
             try {
                 $stmt->execute();
                 return CADASTRADO_COM_SUCESSO;
@@ -267,6 +269,34 @@
                         'HashKey' => $row[3],
                         'displayKey' => $row[4],
                         'timeCreation' => $row[5]);
+                    array_push($data, $tmp);
+                }
+                if ( !empty($data)) {
+                    return $data;
+
+                }else
+                    return ERRO_BUSCA;
+
+            }catch (PDOException $e){
+                echo $e;
+                return false;
+            }
+        }
+
+        function listarDados($idUsuario, $shareId){
+            $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device WHERE device.idUsuario = :idUsuario AND 
+                                                                                      dados.HashKey_device = device.HashKey AND device.displayKey = :shareId');
+            $stmt->bindValue(':idUsuario', $idUsuario);
+            $stmt->bindValue(':shareId', $shareId);
+            try{
+                $stmt->execute();
+                $data = [];
+                foreach ($stmt as $row){
+                    $tmp = array(
+                        'valor' => $row[2],
+                        'tipoSensor' => $row[3],
+                        'timeCreation' => $row[4],
+                        'tag' => $row[5]);
                     array_push($data, $tmp);
                 }
                 if ( !empty($data)) {

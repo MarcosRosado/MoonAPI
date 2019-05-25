@@ -14,7 +14,6 @@ $(function () {
         url: "../private/page_cadastroDevice/cadastroDevice.php",
         data: $('form').serialize(),
         success: function (response) {
-            console.log(response);
             var resposta = jQuery.parseJSON(response);
             if (resposta['response'] === 200){
                 md.showNotification('top','center', "Dispositivo cadastrado com sucesso!", 3);

@@ -13,7 +13,6 @@ function changeData(){
         type:"get",
         data:{"session":"verificar"},
         success:function (result) {
-            console.log(result);
             const response = jQuery.parseJSON(result);
             if(response["status"] == "online" ) {
                 document.getElementById("userLogin").innerHTML = "Bem vindo "+response["nomeUsuario"];

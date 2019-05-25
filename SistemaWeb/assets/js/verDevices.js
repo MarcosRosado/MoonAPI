@@ -50,11 +50,12 @@ function alterarCompartilhamento(){
     $('#my_modal2').modal('hide');
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
+    var device = dataLog[0];
 
     $.ajax({
         url: "../private/page_cadastroDevice/alterarCompartilhamento.php",
-        type: "get",
-        data:{"device": dataLog[0]},
+        type: "post",
+        data:{"device": device},
         success: function (result) {
             const response = jQuery.parseJSON(result);
             if(response["response"] === 200){
@@ -62,7 +63,6 @@ function alterarCompartilhamento(){
                 md.showNotification('top','center', "ShareID Alterado com sucesso!", 3);
             }
             else{
-                console.log(response);
                 console.log("erro ao alterar ShareID");
             }
         }
