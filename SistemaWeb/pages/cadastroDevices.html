@@ -1,0 +1,97 @@
+
+      <!-- Página responsável pelo cadastro de produtos -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Cadastro de dispositivos</h4>
+                  <p class="card-category">Insira as informações para cadastrar um novo dispositivo</p>
+                </div>
+                <div class="card-body">
+                  <form id="cadastroDevice">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Nome do dispositivo</label>
+                          <input type="text" class="form-control" name="nome" required>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary pull-right" href="#" name="cadastrarDevice" id="cadastrarDevice" >Cadastrar dispositivo</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">Listagem de Dispositivos</h4>
+                  <p class="card-category"> Todos os dispositivos cadastrados</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                      <th>
+                        Nome do Dispositivo
+                      </th>
+                      <th>
+                        Hash do dispositivo
+                      </th>
+                      <th>
+                        ID de compartilhamento
+                      </th>
+                      <th>
+                        Hora de cadastro
+                      </th>
+                      <th>
+                        Gerenciamento
+                      </th>
+                      </thead>
+                      <tbody id="tableBodyDispositivos">
+                      <tr>
+                        <td>
+                          Carregando listagem de dispositivos...
+                        </td>
+                      <tr/>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL -->
+      <div class="modal fade" id="my_modal2" tabindex="-1" role="dialog" aria-labelledby="my_modalLabel">
+        <div class="modal-dialog" role="dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><a class="material-icons">close</a></button>
+            </div>
+            <div class="modal-body" id="modalBody2">
+            </div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" type="button" class="btn btn-warning" onclick="alterarCompartilhamento()">Alterar Compartilhamento</button>
+            </div>
+          </div>
+        </div>
+
+
+      <script src="assets/js/verDevices.js?1.0"></script>
+
+      <script src="assets/js/cadastroDevice.js?1.0"></script>

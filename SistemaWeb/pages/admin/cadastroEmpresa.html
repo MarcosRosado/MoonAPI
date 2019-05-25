@@ -1,0 +1,112 @@
+
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Cadastro de empresas</h4>
+                  <p class="card-category">Insira as informações para cadastrar uma nova empresa</p>
+                </div>
+                <div class="card-body">
+                  <form id="cadastro">
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Nome</label>
+                          <input type="text" class="form-control" name ="nome" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Email</label>
+                          <input type="email" class="form-control" name="email" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Senha</label>
+                          <input type="password" class="form-control" name="senha" required>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right" href="#" name="cadastrarFuncionario" id="cadastrarFuncionario" >Cadastrar Empresa</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">Listagem de Empresas</h4>
+                  <p class="card-category"> Todos as empresas do sistema</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                      <th>
+                        Email
+                      </th>
+                      <th>
+                        Nome
+                      </th>
+                      <th>
+                        acess
+                      </th>
+                      <th>
+                        Ação
+                      </th>
+                      </thead>
+                      <tbody id="tableBodyPessoal">
+                      <tr>
+                        <td>
+                          Carregando listagem de empresas...
+                        </td>
+                      <tr/>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+
+
+      <div class="modal fade" id="my_modal" tabindex="-1" role="dialog" aria-labelledby="my_modalLabel">
+        <div class="modal-dialog" role="dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><a class="material-icons">close</a></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="editarCategoria()">Editar Acesso</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <script src="assets/js/admin/verEmpresas.js?1.0"></script>
+      <script src="assets/js/admin/cadastroEmpresa.js?1.0"></script>

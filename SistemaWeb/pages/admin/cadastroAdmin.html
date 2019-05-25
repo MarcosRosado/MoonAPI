@@ -1,0 +1,88 @@
+
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Cadastro de administrador</h4>
+                  <p class="card-category">Crie um novo adminsitrador para a empresa</p>
+                </div>
+                <div class="card-body">
+                  <form id="cadastro">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Status do administrador</label>
+                          <select type="text" name="status" class="custom-select">
+                            <option value = "1"> Administrador </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Login do administrador</label>
+                          <input type="text" class="form-control" name="login" required>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">Senha do administrador</label>
+                        <input type="password" class="form-control" name="senha" required>
+                      </div>
+                    </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Confirme a senha</label>
+                          <input type="password" class="form-control" name="senhaConf" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Nome</label>
+                          <input type="text" class="form-control" name ="nome" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Endereço</label>
+                          <input type="text" class="form-control" name="end" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Email</label>
+                          <input type="email" class="form-control" name="email" required>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">CPF (somente digitos)</label>
+                          <input type="text" class="form-control" name="cpf" required>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Telefone</label>
+                          <input type="text" class="form-control" name="telefone" required>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right" href="#" name="cadastrarFuncionario" id="cadastrarFuncionario" >Cadastrar Funcionário</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="assets/js/admin/cadastroFuncionario.js?1.0"></script>

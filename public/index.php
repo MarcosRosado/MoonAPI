@@ -14,113 +14,214 @@ $app = new \Slim\App([
     ]
 ]);
 
-// Exemplos de POST e GET
 
-/*
 
-// recupera as credencias da API a partir do login de um usuário
-$app->get('/getApiAut', function (Request $request, Response $response){
-    if (isTheseParametersAvailable(array('login', 'senha'))) {
+// cadastra um novo usuario no banco de dados
+$app->post('/cadastroUsuario', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('nome','email','senha'))){
+        $requestData = $request->getParsedBody();
+        //API auth params
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        //cadastra o funcionário
+        $nome = $requestData['nome'];
+        $email = $requestData['email'];
+        $senha = $requestData['senha'];
+        $pw = password_hash($senha, PASSWORD_BCRYPT);
+
+        $result = $db->criarUsuario($nome, $email, $pw);
+
+        if ($result == CADASTRADO_COM_SUCESSO){
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = "registrado com sucesso";
+        }
+        else {
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "usuario ja cadastrado";
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+
+    }
+});
+
+
+// faz o login e recupera o id do usuário (utilizar como sessão no sistema)
+$app->get('/login', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('email', 'senha'))) {
         $headers = $request->getQueryParams();
-        $login = $headers['login'];
+        $email = $headers['email'];
         $senha = $headers['senha'];
 
-        $util = new Util();
-        $result = $util->getApiAuth($login, $senha);
+        $db = new DbOperations();
+        $result = $db->login($email, $senha);
 
 
         $responseData = Array();
         if ($result == ERRO_BUSCA) {
-            $responseData['error'] = true;
+            $responseData['response'] = BAD_REQUEST;
             $responseData['message'] = "usuario nao encontrado";
 
         }elseif ($result == ERRO_AUTH){
-            $responseData['error'] = true;
+            $responseData['response'] = BAD_REQUEST;
             $responseData['message'] = "auth failure";
         }
         else {
-            $responseData['error'] = false;
-            $responseData['message'] = "login e senha recuperados";
-            $responseData['status'] = $result[2];
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result[0];
         }
-    }
 
-    // API auth error
-    else{
-        $responseData['error'] = true;
-        $responseData['message'] = "erro ao autenticar, acesso negado!";
-    }
 
-    $response->getBody()->write(json_encode($responseData));
+        $response->getBody()->write(json_encode($responseData));
+    }
 
 });
 
-// altera dados de um usuario
-$app->post('/alterarDadosPessoais', function (Request $request, Response $response){
-    if (isTheseParametersAvailable(array( 'telefone','email','login','senha','endereco', 'API_login', 'API_pw'))){
+// cadastra um novo dispositivo no banco de dados
+$app->post('/cadastrarDevice', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('idUsuario','nomeDevice'))){
         $requestData = $request->getParsedBody();
-        //API auth params
-        $login = $requestData['API_login'];
-        $pw = $requestData['API_pw'];
-        $util = new Util();
-        $API_data = $util->getApiAuth($login, $pw);
-        $API_login = $API_data[0];
-        $API_pw = $API_data[1];
-        $status = $API_data[2];
 
-        $db = new DbOperations($API_login, $API_pw);
+        $db = new DbOperations();
         $responseData = array();
 
-        //API verificação de autorização e login
-        if (($db->checkDNS() != null && $status == 1) || ($status == 99)){
+        //cadastra o Device
+        $idUsuario = $requestData['idUsuario'];
+        $nomeDevice = $requestData['nomeDevice'];
 
-            //atualiza os dados
-            $loginFunc = $requestData['login'];
+        $result = $db->cadastrarDevice($idUsuario, $nomeDevice);
 
-            $telefone = $requestData['telefone'];
-            if($telefone == "Manter"){
-                $telefone = null;
-            }
-            $email = $requestData['email'];
-            if($email == "Manter"){
-                $email = null;
-            }
-            $senha = $requestData['senha'];
-            if($senha == "Manter"){
-                $senha = null;
-                $pw = null;
-            }else{
-                $pw = password_hash($senha, PASSWORD_BCRYPT);
-            }
-            $endereco = $requestData['endereco'];
-            if($endereco == "Manter"){
-                $endereco = null;
-            }
-
-
-            $result = $db->alterarDadosPessoais($telefone, $email, $loginFunc, $endereco, $pw, $login, $status);
-
-            if ($result == UPDATE_SUCCESS){
-                $responseData['error'] = false;
-                $responseData['message'] = "dados alterados com sucesso";
-            }
-            else {
-                $responseData['error'] = true;
-                $responseData['message'] = "erro ao alterar dados, confira o login de seu funcionario";
-            }
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro ao cadastrar";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
         }
 
-        // API auth error
-        else{
-            $responseData['error'] = true;
-            $responseData['message'] = "erro ao autenticar, acesso negado!";
+        $response->getBody()->write(json_encode($responseData));
+
+    }
+});
+
+// recupera o id do dispositivo (hashkey)
+$app->get('/getDeviceId', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('idUsuario', 'nomeDevice'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $idUsuario = $headers['idUsuario'];
+        $nomeDevice = $headers['nomeDevice'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->getDeviceId($idUsuario, $nomeDevice);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro ao cadastrar";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
         }
 
         $response->getBody()->write(json_encode($responseData));
     }
+
 });
 
-*/
+// recupera o shareID do dispositivo
+$app->get('/getDeviceShareId', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('idUsuario', 'nomeDevice'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $idUsuario = $headers['idUsuario'];
+        $nomeDevice = $headers['nomeDevice'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->getDeviceShareId($idUsuario, $nomeDevice);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro ao cadastrar";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+    }
+
+});
+
+
+
+// atualiza o shareID do dispositivo
+$app->patch('/updateDeviceShareId', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('idUsuario','nomeDevice'))){
+        $requestData = $request->getQueryParams();
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        //cadastra o Device
+        $idUsuario = $requestData['idUsuario'];
+        $nomeDevice = $requestData['nomeDevice'];
+
+        $result = $db->updateDeviceShareId($idUsuario, $nomeDevice);
+
+        if ($result == UPDATE_ERROR){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro ao atualizar chave";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = "update bem sucedido";
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+
+    }
+});
+
+
+// cadastra um novo dispositivo no banco de dados
+$app->post('/inserirDado', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('hashDevice', 'valor', 'tipoSensor'))){
+        $requestData = $request->getParsedBody();
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        //cadastra o Device
+        $hashDevice = $requestData['hashDevice'];
+        $valor = $requestData['valor'];
+        $tipoSensor = $requestData['tipoSensor'];
+
+        $result = $db->inserirDados($hashDevice, $valor, $tipoSensor);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro ao cadastrar";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = "dado inserido com sucesso";
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+
+    }
+});
 
 
 //function to check parameters
@@ -146,6 +247,60 @@ function isTheseParametersAvailable($required_fields)
     }
     return true;
 }
+
+// recupera o shareID do dispositivo
+$app->get('/getNomeUsuario', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('idUsuario'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $idUsuario = $headers['idUsuario'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->getNameUser($idUsuario);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro busca";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+    }
+
+});
+
+// recupera o shareID do dispositivo
+$app->get('/getDispositivos', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('idUsuario'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $idUsuario = $headers['idUsuario'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->listarDispositivos($idUsuario);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "erro busca";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+    }
+
+});
 
 
 
