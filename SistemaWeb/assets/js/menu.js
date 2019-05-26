@@ -1,6 +1,7 @@
 
 
 $(document).ready(function () {
+    $("#body").load("pages/cadastroDevices.html");
     //dashboard
     $("#dashboard").click(function () {
         $("#dashboardLI").addClass("nav-item active");
@@ -30,7 +31,7 @@ $(document).ready(function () {
             data:{"session":"logout"},
             success:function (result) {
                 if(result == "sucesso"){
-                    window.location.href="../LoginPage/index.html";
+                    window.location.href="../Entrar/index.html";
                 }
             }
 

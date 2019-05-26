@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteRule ^index\.html$ /MoonProject/Entrar [R=301,L]
+RewriteRule ^(.*)/index\.html$ /$1/ [R=301,L]

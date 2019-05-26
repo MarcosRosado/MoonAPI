@@ -3,6 +3,7 @@ var myVar;
 // esconde o loader após a página ter sido carregada, com um delay de 1s
 function loader() {
     changeData();
+    $("#body").load("pages/cadastroDevices.html");
     myVar = setTimeout(showPage, 2500);
 
 }
@@ -19,7 +20,7 @@ function changeData(){
             }
             else{
                 logout();
-                window.location = "../LoginPage/index.html";
+                window.location = "../Entrar/index.html";
             }
         }
     })
@@ -31,7 +32,7 @@ function logout(){
         data:{"session":"logout"},
         success:function (result) {
             if(result == "sucesso"){
-                window.location.href="../LoginPage/index.html";
+                window.location.href="../Entrar/index.html";
             }
         }
 

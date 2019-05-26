@@ -94,7 +94,7 @@ function insertRow() {
                         tableContent = '<tr bgcolor="#C8E6C9">'
                         tableContent += "<td>" + response["message"][i]["nome"] + "</td>"
                             + "<td>" + response["message"][i]["HashKey"] + "</td>"
-                            + "<td>" + response["message"][i]["displayKey"] + "</td>"
+                            + "<td>" + " <a target='_blank' style='target-new: tab;' href= 'http://35.245.96.146/MoonProject/Visualizar/?shareId="+response["message"][i]["displayKey"]+"'" + "> Link de compartilhamento </a> </td>"
                             + "<td>" + response["message"][i]["timeCreation"] + "</td>"
                             + "<td>" + '<button class="btn btn-primary" href="#" data-target="#my_modal2" data-toggle="modal" data-id="my_id_value" ' +
                             ' id="btnAlterarCompartilhamento">Alterar Compartilhamento</button>' + "</td>"

@@ -281,7 +281,7 @@ $app->get('/getDispositivos', function (Request $request, Response $response){
 
 // recupera o shareID do dispositivo
 $app->get('/getDados', function (Request $request, Response $response){
-    if (isTheseParametersAvailable(array('idUsuario', 'shareId'))) {
+    if (isTheseParametersAvailable(array('shareId'))) {
         $headers = $request->getQueryParams();
 
         //cadastra o Device
@@ -291,7 +291,7 @@ $app->get('/getDados', function (Request $request, Response $response){
         $db = new DbOperations();
         $responseData = array();
 
-        $result = $db->listarDados($idUsuario, $sharedId);
+        $result = $db->listarDados($sharedId);
 
         if ($result == ERRO_BUSCA){
             $responseData['response'] = BAD_REQUEST;

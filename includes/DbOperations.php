@@ -264,11 +264,13 @@
                 $stmt->execute();
                 $data = [];
                 foreach ($stmt as $row){
+                    $dt = new DateTime("@$row[5]");
+                    $dt = $dt->setTimezone(new DateTimeZone("America/Sao_Paulo"))->format('d/m/Y H:i:s');
                     $tmp = array(
                         'nome' => $row[1],
                         'HashKey' => $row[3],
                         'displayKey' => $row[4],
-                        'timeCreation' => $row[5]);
+                        'timeCreation' => $dt);
                     array_push($data, $tmp);
                 }
                 if ( !empty($data)) {
@@ -283,19 +285,20 @@
             }
         }
 
-        function listarDados($idUsuario, $shareId){
-            $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device WHERE device.idUsuario = :idUsuario AND 
-                                                                                      dados.HashKey_device = device.HashKey AND device.displayKey = :shareId');
-            $stmt->bindValue(':idUsuario', $idUsuario);
+        function listarDados($shareId){
+            $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device 
+                                                   WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId');
             $stmt->bindValue(':shareId', $shareId);
             try{
                 $stmt->execute();
                 $data = [];
                 foreach ($stmt as $row){
+                    $dt = new DateTime("@$row[4]");
+                    $dt = $dt->setTimezone(new DateTimeZone("America/Sao_Paulo"))->format('d/m/Y H:i:s');
                     $tmp = array(
                         'valor' => $row[2],
                         'tipoSensor' => $row[3],
-                        'timeCreation' => $row[4],
+                        'timeCreation' => $dt,
                         'tag' => $row[5]);
                     array_push($data, $tmp);
                 }
