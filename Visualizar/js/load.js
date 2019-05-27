@@ -1,3 +1,6 @@
+var DataArray = [];
+var Data;
+
 function findGetParameter(parameterName) {
     var result = null,
         tmp = [];
@@ -18,10 +21,19 @@ function getDados(paramVal){
         data:{"shareId":paramVal},
         success:function (result) {
             const response = jQuery.parseJSON(result);
+
             if (response['response'] === 200){
-                for (i = 0; i < response['message'].length; i++) {
-                    console.log(response['message'][i]);
+                for (let i = 0; i < response['message'].length; i++) {
+                    var temp = [];
+                    for (var key in response['message'][i]){
+                        temp.push(response['message'][i][key]);
+                    }
+                    console.log("Temp: ");
+                    console.log(temp);
+                    DataArray.push(temp);
                 }
+                console.log("Data Array: ");
+                console.log(DataArray);
                 //alert(response['message'][0]['valor']);
             }
             else{
@@ -33,10 +45,34 @@ function getDados(paramVal){
 
 }
 
+function downloadData(){
+
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+        DataArray.forEach(function(rowArray) {
+            console.log(rowArray);
+            let temp = rowArray.join(",");
+            csvContent += temp + "\r\n";
+        });
+
+
+
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "dados_"+Date.now()+".csv");
+    document.body.appendChild(link); // Required for FF
+
+    link.click(); // This will download the data file named "my_data.csv".
+}
 
 $(document).ready(function () {
     var paramVal = findGetParameter("shareId");
     getDados(paramVal);
 
+    $('#downloadData').click(function(){
+        downloadData();
+    });
 
 });
+
