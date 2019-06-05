@@ -4,7 +4,7 @@ var myVar;
 function loader() {
     changeData();
     $("#body").load("pages/cadastroDevices.html");
-    myVar = setTimeout(showPage, 2500);
+    myVar = setTimeout(showPage, 1500);
 
 }
 
