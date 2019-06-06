@@ -28,12 +28,8 @@ function getDados(paramVal){
                     for (var key in response['message'][i]){
                         temp.push(response['message'][i][key]);
                     }
-                    console.log("Temp: ");
-                    console.log(temp);
                     DataArray.push(temp);
                 }
-                console.log("Data Array: ");
-                console.log(DataArray);
                 //alert(response['message'][0]['valor']);
             }
             else{
@@ -50,7 +46,6 @@ function downloadData(){
 
     let csvContent = "data:text/csv;charset=utf-8,";
         DataArray.forEach(function(rowArray) {
-            console.log(rowArray);
             let temp = rowArray.join(",");
             csvContent += temp + "\r\n";
         });
@@ -69,6 +64,11 @@ function downloadData(){
 $(document).ready(function () {
     var paramVal = findGetParameter("shareId");
     getDados(paramVal);
+    setInterval(function() {
+        DataArray = [];
+        getDados(paramVal);
+        updateLineChart();
+    }, 30 * 1000); // 60 * 1000 milsec
 
     $('#downloadData').click(function(){
         downloadData();

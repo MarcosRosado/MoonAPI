@@ -293,12 +293,12 @@
                 $stmt->execute();
                 $data = [];
                 foreach ($stmt as $row){
-                    $dt = new DateTime("@$row[4]");
-                    $dt = $dt->setTimezone(new DateTimeZone("America/Sao_Paulo"))->format('d/m/Y H:i:s');
+                    //$dt = new DateTime("@$row[4]");
+                    //$dt = $dt->setTimezone(new DateTimeZone("America/Sao_Paulo"))->format('d/m/Y H:i:s');
                     $tmp = array(
                         'valor' => $row[2],
                         'tipoSensor' => $row[3],
-                        'timeCreation' => $dt,
+                        'timeCreation' => $row[4],
                         'tag' => $row[5]);
                     array_push($data, $tmp);
                 }

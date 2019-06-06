@@ -1,6 +1,29 @@
 const width_threshold = 480;
+var Data;
+
+
+$(document).ready(function () {
+  setTimeout(function(){
+    drawLineChart();
+  },500);
+  setInterval(function() {
+    setTimeout(function(){
+      drawLineChart();
+      updateLineChart();
+    },500);
+  }, 30 * 1000); // 60 * 1000 milsec
+
+
+});
+
+
 
 function drawLineChart() {
+  let DataChart = [];
+  let LabelChart = [];
+  let Label;
+
+
   if ($("#lineChart").length) {
     ctxLine = document.getElementById("lineChart").getContext("2d");
     optionsLine = {
@@ -9,7 +32,7 @@ function drawLineChart() {
           {
             scaleLabel: {
               display: true,
-              labelString: "Hits"
+              labelString: DataArray[0][1]
             }
           }
         ]
@@ -17,42 +40,45 @@ function drawLineChart() {
     };
 
     // Set aspect ratio based on window width
-    optionsLine.maintainAspectRatio =
-      $(window).width() < width_threshold ? false : true;
+    optionsLine.maintainAspectRatio = $(window).width() < width_threshold ? false : true;
+
+    // recebe o timestamp atual para comparar com o timestamp da leitura
+    let someDate = new Date();
+    let curTimestamp = Math.floor(someDate.getTime()/1000); // pega o epoch atual
+
+    // moldes de tempo para exibir no gráfico
+    let h12 = 43200; // tempo em horas de meio dia‬
+    let m20 = 1200;
+
+    // recupera os valores retornados da API e preenche os Labels e Data do gráfico
+    for (let i=0; i< DataArray.length; i++){
+      if (parseInt(DataArray[i][2]) + h12 >= curTimestamp) {
+        DataChart.push(parseFloat(DataArray[i][0]));
+        let d = new Date(parseInt(DataArray[i][2])*1000);
+        d.toLocaleString();
+        let hours = d.getHours();
+        let mins = d.getMinutes();
+        let day = d.getDate();
+        let month = d.getMonth() + 1;
+
+        let returnString = day+"/"+month+" "+hours+":"+mins;
+
+        LabelChart.push(returnString);
+        Label = DataArray[i][3];
+      }
+    }
 
     configLine = {
       type: "line",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July"
-        ],
+        labels: LabelChart,
         datasets: [
           {
-            label: "Latest Hits",
-            data: [88, 68, 79, 57, 56, 55, 70],
-            fill: false,
-            borderColor: "rgb(75, 192, 192)",
-            lineTension: 0.1
-          },
-          {
-            label: "Popular Hits",
-            data: [33, 45, 37, 21, 55, 74, 69],
+            label: Label,
+            data: DataChart,
             fill: false,
             borderColor: "rgba(255,99,132,1)",
-            lineTension: 0.1
-          },
-          {
-            label: "Featured",
-            data: [44, 19, 38, 46, 85, 66, 79],
-            fill: false,
-            borderColor: "rgba(153, 102, 255, 1)",
-            lineTension: 0.1
+            lineTension: 0.5
           }
         ]
       },
