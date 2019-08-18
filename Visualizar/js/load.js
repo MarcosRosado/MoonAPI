@@ -46,6 +46,7 @@ function downloadData(){
 
     let csvContent = "data:text/csv;charset=utf-8,";
         DataArray.forEach(function(rowArray) {
+            console.log(rowArray);
             let temp = rowArray.join(",");
             csvContent += temp + "\r\n";
         });

@@ -214,6 +214,8 @@
 
         function inserirDados ( $hashDevice, $valor, $tipoSensor, $tag){
 
+
+
             // insere os dados no sistema
             $time = mktime();
             $stmt = $this->con->prepare('INSERT INTO dados (HashKey_device, valor, tipoSensor, time, tag)
@@ -287,7 +289,7 @@
 
         function listarDados($shareId){
             $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device 
-                                                   WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId');
+                                                   WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId ORDER BY tipoSensor');
             $stmt->bindValue(':shareId', $shareId);
             try{
                 $stmt->execute();
@@ -300,6 +302,33 @@
                         'tipoSensor' => $row[3],
                         'timeCreation' => $row[4],
                         'tag' => $row[5]);
+                    array_push($data, $tmp);
+                }
+                if ( !empty($data)) {
+                    return $data;
+
+                }else
+                    return ERRO_BUSCA;
+
+            }catch (PDOException $e){
+                echo $e;
+                return false;
+            }
+        }
+
+        function getSensorsByType($shareId, $type){
+            $stmt = $this->con->prepare('SELECT DISTINCT dados.tag FROM dados,device 
+                                                   WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId AND dados.tipoSensor = :type ORDER BY dados.tag');
+            $stmt->bindValue(':shareId', $shareId);
+            $stmt->bindValue(':type', $type);
+            try{
+                $stmt->execute();
+                $data = [];
+                foreach ($stmt as $row){
+                    //$dt = new DateTime("@$row[4]");
+                    //$dt = $dt->setTimezone(new DateTimeZone("America/Sao_Paulo"))->format('d/m/Y H:i:s');
+                    $tmp = array(
+                        'tag' => $row[0]);
                     array_push($data, $tmp);
                 }
                 if ( !empty($data)) {

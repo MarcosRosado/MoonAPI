@@ -207,16 +207,21 @@ $app->post('/inserirDado', function (Request $request, Response $response){
         $valor = $requestData['valor'];
         $tipoSensor = $requestData['tipoSensor'];
         $tag = $requestData['tag'];
-
-        $result = $db->inserirDados($hashDevice, $valor, $tipoSensor, $tag);
-
-        if ($result == ERRO_BUSCA){
-            $responseData['response'] = BAD_REQUEST;
-            $responseData['message'] = "erro ao cadastrar";
+        if (strstr($tipoSensor, "#") || strstr($valor, "#") || strstr($tag, "#")){ // busca por erros nos valores de inserção
+                $responseData['response'] = BAD_REQUEST;
+                $responseData['message'] = "Caracter invalido encontrado";
         }
         else {
-            $responseData['response'] = SUCESS;
-            $responseData['message'] = "dado inserido com sucesso";
+
+            $result = $db->inserirDados($hashDevice, $valor, $tipoSensor, $tag);
+
+            if ($result == ERRO_BUSCA) {
+                $responseData['response'] = BAD_REQUEST;
+                $responseData['message'] = "erro ao cadastrar";
+            } else {
+                $responseData['response'] = SUCESS;
+                $responseData['message'] = "dado inserido com sucesso";
+            }
         }
 
         $response->getBody()->write(json_encode($responseData));
@@ -294,7 +299,35 @@ $app->get('/getDados', function (Request $request, Response $response){
         $result = $db->listarDados($sharedId);
 
         if ($result == ERRO_BUSCA){
-            $responseData['response'] = BAD_REQUEST;
+            $responseData['response'] = NO_CONTENT;
+            $responseData['message'] = "erro busca";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+    }
+
+});
+
+// recupera o shareID do dispositivo
+$app->get('/getSensorsByType', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('shareId', 'type'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $type = $headers['type'];
+        $sharedId = $headers['shareId'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->getSensorsByType($sharedId, $type);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = NO_CONTENT;
             $responseData['message'] = "erro busca";
         }
         else {

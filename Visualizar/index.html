@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- https://getbootstrap.com/ -->
     <link rel="stylesheet" href="css/tooplate.css?v1.1">
+
 </head>
 
 <body id="reportsPage">
@@ -81,21 +82,8 @@
             <!-- row -->
             <div class="row tm-content-row tm-mt-big">
                 <div class="tm-col tm-col-big">
-                    <div class="bg-white tm-block h-100">
-                        <h2 class="tm-block-title">Line Chart</h2>
-                        <canvas id="lineChart"></canvas>
-                    </div>
-                </div>
-                <div class="tm-col tm-col-big">
-                    <div class="bg-white tm-block h-100">
-                        <h2 class="tm-block-title">Performance</h2>
-                        <canvas id="barChart"></canvas>
-                    </div>
-                </div>
-                <div class="tm-col tm-col-big">
-                    <div class="bg-white tm-block h-100">
-                        <canvas id="pieChart" class="chartjs-render-monitor"></canvas>
-                    </div>
+                        <h2 class="tm-block-title">Temperatura</h2>
+                        <div id="highchart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                 </div>
 
                 <div class="tm-col tm-col-big">
@@ -176,42 +164,23 @@
             </footer>
         </div>
     </div>
+
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/series-label.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/export-data.js"></script>
+
+
     <script src="js/jquery-3.3.1.min.js"></script>
     <!-- https://jquery.com/download/ -->
     <!-- https://momentjs.com/ -->
     <script src="js/load.js?v1.2.3"></script>
-    <script src="js/utils.js"></script>
+    <script src="js/utils.js?v.1.0"></script>
+    <script src="js/high.js?v.1"></script>
     <script src="js/Chart.min.js"></script>
     <!-- http://www.chartjs.org/docs/latest/ -->
     <!-- https://fullcalendar.io/ -->
     <script src="js/bootstrap.min.js"></script>
     <!-- https://getbootstrap.com/ -->
-    <script src="js/tooplate-scripts.js?v1.5.7"></script>
-    <script>
-        let ctxLine,
-            ctxBar,
-            ctxPie,
-            optionsLine,
-            optionsBar,
-            optionsPie,
-            configLine,
-            configBar,
-            configPie,
-            lineChart;
-        barChart, pieChart;
-        // DOM is ready
-        $(function () {
-            updateChartOptions();
-            drawBarChart(); // Bar Chart
-            drawPieChart(); // Pie Chart
-
-            $(window).resize(function () {
-                updateChartOptions();
-                updateLineChart();
-                updateBarChart();
-                reloadPage();
-            });
-        })
-    </script>
 </body>
 </html>

@@ -19,9 +19,6 @@ $(document).ready(function () {
 
 
 function drawLineChart() {
-  let DataChart = [];
-  let LabelChart = [];
-  let Label;
 
 
   if ($("#lineChart").length) {
@@ -32,12 +29,17 @@ function drawLineChart() {
           {
             scaleLabel: {
               display: true,
-              labelString: DataArray[0][1]
+              labelString: "Umidade"
             }
           }
         ]
       }
     };
+
+    let DataChart = [];
+    let LabelChart = [];
+    let tempChart = [];
+    let Label;
 
     // Set aspect ratio based on window width
     optionsLine.maintainAspectRatio = $(window).width() < width_threshold ? false : true;
@@ -53,18 +55,20 @@ function drawLineChart() {
     // recupera os valores retornados da API e preenche os Labels e Data do gráfico
     for (let i=0; i< DataArray.length; i++){
       if (parseInt(DataArray[i][2]) + h12 >= curTimestamp) {
-        DataChart.push(parseFloat(DataArray[i][0]));
-        let d = new Date(parseInt(DataArray[i][2])*1000);
-        d.toLocaleString();
-        let hours = d.getHours();
-        let mins = d.getMinutes();
-        let day = d.getDate();
-        let month = d.getMonth() + 1;
+        if (DataArray[i][1] === "Umid") { // exibe os dados de temperatura
+          DataChart.push(parseFloat(DataArray[i][0]));
+          let d = new Date(parseInt(DataArray[i][2]) * 1000);
+          d.toLocaleString();
+          let hours = d.getHours();
+          let mins = d.getMinutes();
+          let day = d.getDate();
+          let month = d.getMonth() + 1;
 
-        let returnString = day+"/"+month+" "+hours+":"+mins;
+          let returnString = day + "/" + month + " " + hours + ":" + mins;
 
-        LabelChart.push(returnString);
-        Label = DataArray[i][3];
+          LabelChart.push(returnString);
+          Label = DataArray[i][3];
+        }
       }
     }
 
@@ -87,6 +91,79 @@ function drawLineChart() {
 
     lineChart = new Chart(ctxLine, configLine);
   }
+
+  if ($("#lineChart2").length) {
+    ctxLine = document.getElementById("lineChart2").getContext("2d");
+    optionsLine = {
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: "Temperatura"
+            }
+          }
+        ]
+      }
+    };
+
+    let DataChart = [];
+    let LabelChart = [];
+    let tempChart = [];
+    let Label;
+
+    // Set aspect ratio based on window width
+    optionsLine.maintainAspectRatio = $(window).width() < width_threshold ? false : true;
+
+    // recebe o timestamp atual para comparar com o timestamp da leitura
+    let someDate = new Date();
+    let curTimestamp = Math.floor(someDate.getTime()/1000); // pega o epoch atual
+
+    // moldes de tempo para exibir no gráfico
+    let h12 = 43200; // tempo em horas de meio dia‬
+    let m20 = 1200;
+
+    // recupera os valores retornados da API e preenche os Labels e Data do gráfico
+    for (let i=0; i< DataArray.length; i++){
+      if (parseInt(DataArray[i][2]) + h12 >= curTimestamp) {
+        if (DataArray[i][1] === "Temp") { // exibe os dados de temperatura
+          DataChart.push(parseFloat(DataArray[i][0]));
+          let d = new Date(parseInt(DataArray[i][2]) * 1000);
+          d.toLocaleString();
+          let hours = d.getHours();
+          let mins = d.getMinutes();
+          let day = d.getDate();
+          let month = d.getMonth() + 1;
+
+          let returnString = day + "/" + month + " " + hours + ":" + mins;
+
+          LabelChart.push(returnString);
+          Label = DataArray[i][3];
+        }
+      }
+    }
+
+    configLine = {
+      type: "line",
+      data: {
+        labels: LabelChart,
+        datasets: [
+          {
+            label: Label,
+            data: DataChart,
+            fill: false,
+            borderColor: "rgba(255,99,132,1)",
+            lineTension: 0.5
+          }
+        ]
+      },
+      options: optionsLine
+    };
+
+    lineChart = new Chart(ctxLine, configLine);
+  }
+
+
 }
 
 function drawBarChart() {
