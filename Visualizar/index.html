@@ -50,24 +50,6 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        Reports
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#">Daily Report</a>
-                                        <a class="dropdown-item" href="#">Weekly Report</a>
-                                        <a class="dropdown-item" href="#">Yearly Report</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="products.html">Products</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link" href="accounts.html">Accounts</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
                                         Mais opções
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -83,7 +65,11 @@
             <div class="row tm-content-row tm-mt-big">
                 <div class="tm-col tm-col-big">
                         <h2 class="tm-block-title">Temperatura</h2>
-                        <div id="highchart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                        <div id="tempChart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
+                </div>
+                <div class="tm-col tm-col-big">
+                    <h2 class="tm-block-title">Umidade</h2>
+                    <div id="umidChart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
                 </div>
 
                 <div class="tm-col tm-col-big">
@@ -122,37 +108,6 @@
                         </ol>
                     </div>
                 </div>
-                <div class="tm-col tm-col-big">
-                    <div class="bg-white tm-block h-100">
-                        <h2 class="tm-block-title">Calendar</h2>
-                        <div id="calendar"></div>
-                        <div class="row mt-4">
-                            <div class="col-12 text-right">
-                                <a href="#" class="tm-link-black">View Schedules</a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="tm-col tm-col-small">
-                    <div class="bg-white tm-block h-100">
-                        <h2 class="tm-block-title">Upcoming Tasks</h2>
-                        <ol class="tm-list-group">
-                            <li class="tm-list-group-item">List of tasks</li>
-                            <li class="tm-list-group-item">Lorem ipsum doloe</li>
-                            <li class="tm-list-group-item">Read reports</li>
-                            <li class="tm-list-group-item">Write email</li>
-                            
-                            <li class="tm-list-group-item">Call customers</li>
-                            <li class="tm-list-group-item">Go to meeting</li>
-                            <li class="tm-list-group-item">Weekly plan</li>
-                            <li class="tm-list-group-item">Ask for feedback</li>
-                            
-                            <li class="tm-list-group-item">Meet Supervisor</li>
-                            <li class="tm-list-group-item">Company trip</li>
-                        </ol>
-                    </div>
-                </div>
             </div>
             <footer class="row tm-mt-small">
                 <div class="col-12 font-weight-light">
@@ -171,12 +126,12 @@
     <script src="code/modules/export-data.js"></script>
 
 
-    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
     <!-- https://jquery.com/download/ -->
     <!-- https://momentjs.com/ -->
-    <script src="js/load.js?v1.2.3"></script>
+    <script src="js/load.js?v1.2.1.12.24"></script>
     <script src="js/utils.js?v.1.0"></script>
-    <script src="js/high.js?v.1"></script>
+    <script src="js/high.js?v.1.9.135"></script>
     <script src="js/Chart.min.js"></script>
     <!-- http://www.chartjs.org/docs/latest/ -->
     <!-- https://fullcalendar.io/ -->

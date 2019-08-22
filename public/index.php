@@ -211,6 +211,10 @@ $app->post('/inserirDado', function (Request $request, Response $response){
                 $responseData['response'] = BAD_REQUEST;
                 $responseData['message'] = "Caracter invalido encontrado";
         }
+        elseif($valor = "-127" || $valor = "85"){ // verifica se os valores são os erros do sensor
+            $responseData['response'] = BAD_REQUEST;
+            $responseData['message'] = "Caracter invalido encontrado";
+        }
         else {
 
             $result = $db->inserirDados($hashDevice, $valor, $tipoSensor, $tag);
@@ -312,7 +316,7 @@ $app->get('/getDados', function (Request $request, Response $response){
 
 });
 
-// recupera o shareID do dispositivo
+// recupera os sensores de um tipo específico
 $app->get('/getSensorsByType', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('shareId', 'type'))) {
         $headers = $request->getQueryParams();
@@ -340,6 +344,33 @@ $app->get('/getSensorsByType', function (Request $request, Response $response){
 
 });
 
+// recupera os dados de um sensor específico
+$app->get('/getDataBySensor', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('shareId', 'name'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $name = $headers['name'];
+        $sharedId = $headers['shareId'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->getDataBySensor($sharedId, $name);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = NO_CONTENT;
+            $responseData['message'] = "erro busca";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+    }
+
+});
 
 //function to check parameters
 function isTheseParametersAvailable($required_fields)
