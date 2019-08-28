@@ -211,7 +211,7 @@ $app->post('/inserirDado', function (Request $request, Response $response){
                 $responseData['response'] = BAD_REQUEST;
                 $responseData['message'] = "Caracter invalido encontrado";
         }
-        elseif($valor = "-127" || $valor = "85"){ // verifica se os valores são os erros do sensor
+        elseif($valor == "-127" || $valor == "85"){ // verifica se os valores são os erros do sensor
             $responseData['response'] = BAD_REQUEST;
             $responseData['message'] = "Caracter invalido encontrado";
         }

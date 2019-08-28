@@ -5,6 +5,10 @@ let arr = []; // array temporário para processamento dos dados
 let fullDataUmid = []; // dados processados de umidade para o gráfico
 let fullDataTemp = []; // ||       ||       || temperatura      ||  ||  ||
 
+let h12 = 43200; // tempo em horas de meio dia‬
+let h24 = 86400;
+let m20 = 1200;
+
 var Data;
 
 function findGetParameter(parameterName) {
@@ -100,11 +104,10 @@ function loadUmiGraph(){ // processa os dados do gráfico de umidade
     let curTimestamp = Math.floor(someDate.getTime()/1000); // pega o epoch atual
 
     // moldes de tempo para exibir no gráfico
-    let h12 = 43200; // tempo em horas de meio dia‬
-    let m20 = 1200;
+
 
     for (let i = 0; i < DataArray.length; i ++){
-        if (parseInt(DataArray[i][2]) + h12 >= curTimestamp) { // dados das ultimas 12 horas
+        if (parseInt(DataArray[i][2]) + h24 >= curTimestamp) { // dados das ultimas 12 horas
             for (let elem in SensorArrayUmid) {
                 if (SensorArrayUmid[elem] === DataArray[i][3]) {
                     let d = new Date(parseInt(DataArray[i][2]) * 1000);
@@ -124,7 +127,7 @@ function loadUmiGraph(){ // processa os dados do gráfico de umidade
 
     }
     for (let elem in SensorArrayUmid){
-        fullDataTemp.push({ name: SensorArrayUmid[elem],data: arr[elem]});
+        fullDataUmid.push({ name: SensorArrayUmid[elem],data: arr[elem]});
 
     }
 
@@ -138,12 +141,9 @@ function loadTempGraph(){ // processa os dados do gráfico de temperatura
     let someDate = new Date();
     let curTimestamp = Math.floor(someDate.getTime()/1000); // pega o epoch atual
 
-    // moldes de tempo para exibir no gráfico
-    let h12 = 43200; // tempo em horas de meio dia‬
-    let m20 = 1200;
 
     for (let i = 0; i < DataArray.length; i ++){
-        if (parseInt(DataArray[i][2]) + h12 >= curTimestamp) { // dados das ultimas 12 horas
+        if (parseInt(DataArray[i][2]) + h24 >= curTimestamp) { // dados das ultimas 12 horas
             for (let elem in SensorArrayTemp) {
                 if (SensorArrayTemp[elem] === DataArray[i][3]) {
                     let d = new Date(parseInt(DataArray[i][2]) * 1000);
@@ -162,47 +162,46 @@ function loadTempGraph(){ // processa os dados do gráfico de temperatura
         }
 
     }
-    for (let elem in SensorArrayUmid){
-        fullDataUmid.push({ name: SensorArrayTemp[elem],data: arr[elem]});
+    for (let elem in SensorArrayTemp){
+        fullDataTemp.push({ name: SensorArrayTemp[elem],data: arr[elem]});
 
     }
 
 }
 
 
-function downloadData(){
+function downloadData(paramVal){
+
+    window.open("../private/page_visualizar/savecsv.php?shareId="+paramVal);
+}
 
 
-    let csvContent = "data:text/csv;charset=utf-8,";
-        DataArray.forEach(function(rowArray) {
-            console.log(rowArray);
-            let temp = rowArray.join(",");
-            csvContent += temp + "\r\n";
-        });
-
-
-
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "dados_"+Date.now()+".csv");
-    document.body.appendChild(link); // Required for FF
-
-    link.click(); // This will download the data file named "my_data.csv".
+function showPage() {
+    document.getElementById("loader-wrapper").style.display = "none";
+    document.getElementById("home").style.display = "block";
+    document.getElementById("home").removeAttribute("hidden");
 }
 
 $(document).ready(function () {
+
+
     var paramVal = findGetParameter("shareId");
     getDados(paramVal);
+
     setTimeout(function () { // gera os gráficos
         loadTempGraph();
         loadUmiGraph();
-    }, 1000);
+        showPage();
+    }, 5000);
 
 
-    $('#downloadData').click(function(){
-        downloadData();
-    });
+    setTimeout(function () { // gera os gráficos
+        $('#downloadData').click(function(){
+            downloadData(paramVal);
+        });
+
+    }, 5000);
+
 
 });
 

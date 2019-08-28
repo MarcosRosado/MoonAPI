@@ -32,7 +32,8 @@ setTimeout(function () {
 
         Highcharts.chart('tempChart', { // gera os gráficos de temperatura
             chart: {
-                type: 'spline'
+                type: 'spline',
+                zoomType: 'xy'
             },
 
             title: {
@@ -40,7 +41,7 @@ setTimeout(function () {
             },
 
             subtitle: {
-                text: 'Dados das ultimas 12 horas'
+                text: 'Dados das ultimas 24 horas'
             },
 
             yAxis: {
@@ -84,7 +85,7 @@ setTimeout(function () {
             }
 
         });
-    }, 2000);
+    }, 5000);
 
     setTimeout(function () {
 
@@ -92,7 +93,8 @@ setTimeout(function () {
 
         Highcharts.chart('umidChart', { // gera o gráfico de umidade
             chart: {
-                type: 'spline'
+                type: 'spline',
+                zoomType: 'xy'
             },
 
             title: {
@@ -100,7 +102,7 @@ setTimeout(function () {
             },
 
             subtitle: {
-                text: 'Dados das ultimas 12 horas'
+                text: 'Dados das ultimas 24 horas'
             },
 
             yAxis: {
@@ -143,6 +145,6 @@ setTimeout(function () {
             }
 
         });
-    }, 2000);
+    }, 5000);
 
 });
