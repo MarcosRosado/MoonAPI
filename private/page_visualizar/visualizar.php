@@ -13,7 +13,7 @@ $shareId = $_GET['shareId'];
 
 try {
     // recupera os dados da API
-    $ch = curl_init(API_LOCAL."getDados?shareId=".$shareId);
+    $ch = curl_init(API_LOCAL."getDadosDia?shareId=".$shareId);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER,1 );
     $response = curl_exec($ch);
     curl_close($ch);

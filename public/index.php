@@ -288,6 +288,36 @@ $app->get('/getDispositivos', function (Request $request, Response $response){
 
 });
 
+
+// recupera o shareID do dispositivo
+$app->get('/getDadosDia', function (Request $request, Response $response){
+    if (isTheseParametersAvailable(array('shareId'))) {
+        $headers = $request->getQueryParams();
+
+        //cadastra o Device
+        $idUsuario = $headers['idUsuario'];
+        $sharedId = $headers['shareId'];
+
+        $db = new DbOperations();
+        $responseData = array();
+
+        $result = $db->listarDadosDia($sharedId);
+
+        if ($result == ERRO_BUSCA){
+            $responseData['response'] = NO_CONTENT;
+            $responseData['message'] = "erro busca";
+        }
+        else {
+            $responseData['response'] = SUCESS;
+            $responseData['message'] = $result;
+        }
+
+        $response->getBody()->write(json_encode($responseData));
+    }
+
+});
+
+
 // recupera o shareID do dispositivo
 $app->get('/getDados', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('shareId'))) {

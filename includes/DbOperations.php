@@ -287,7 +287,41 @@
             }
         }
 
+        function listarDadosDia($shareId){
+            $time = time();
+            $time = $time - 24*60*60;
+
+            $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device 
+                                                   WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId AND dados.time > :time');
+            $stmt->bindValue(':shareId', $shareId);
+            $stmt->bindValue(':time', $time);
+            try{
+                $stmt->execute();
+                $data = [];
+                foreach ($stmt as $row){
+                    //$dt = new DateTime("@$row[4]");
+                    //$dt = $dt->setTimezone(new DateTimeZone("America/Sao_Paulo"))->format('d/m/Y H:i:s');
+                    $tmp = array(
+                        'valor' => $row[2],
+                        'tipoSensor' => $row[3],
+                        'timeCreation' => $row[4],
+                        'tag' => $row[5]);
+                    array_push($data, $tmp);
+                }
+                if ( !empty($data)) {
+                    return $data;
+
+                }else
+                    return ERRO_BUSCA;
+
+            }catch (PDOException $e){
+                echo $e;
+                return false;
+            }
+        }
+
         function listarDados($shareId){
+            ini_set('memory_limit', '1024M'); // or you could use 1G
             $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device 
                                                    WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId');
             $stmt->bindValue(':shareId', $shareId);
@@ -315,6 +349,7 @@
                 return false;
             }
         }
+
         function getDataBySensor($shareId, $name){
             $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device 
                                                    WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId AND dados.tag = :nome');
