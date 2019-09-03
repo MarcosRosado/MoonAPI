@@ -8,10 +8,15 @@
  */
 
 require_once "../../includes/Constants.php";
+require_once "../../includes/DbOperations.php";
 
 $shareId = $_GET['shareId'];
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
+/*
 try {
     // recupera os dados da API
     $ch = curl_init(API_LOCAL . "getDados?shareId=" . $shareId);
@@ -26,6 +31,19 @@ try {
 } catch (Exception $e) {
     echo $e;
 }
+*/
+$db = new DbOperations();
+$result = $db->listarDados($shareId);
+
+if ($result == ERRO_BUSCA){
+    $responseData['response'] = NO_CONTENT;
+    $responseData['message'] = "erro busca";
+}
+else {
+    $responseData['response'] = SUCESS;
+    $responseData['message'] = $result;
+}
+$output = $responseData;
 
 $f = fopen('php://memory', 'w');
 foreach ($output["message"] as $line) {
