@@ -287,14 +287,15 @@
             }
         }
 
-        function listarDadosDia($shareId){
-            $time = time();
-            $time = $time - 24*60*60;
+        function listarDadosDia($shareId, $timestamp){
+            $timeBeg = $timestamp; //alterar para o timestamp com o dia desejado
+            $time = $timeBeg - 24*60*60; // 24 horas atrás
 
             $stmt = $this->con->prepare('SELECT dados.id, HashKey_device, valor, tipoSensor, time, tag FROM dados,device 
-                                                   WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId AND dados.time > :time');
+                                                   WHERE dados.HashKey_device = device.HashKey AND device.displayKey = :shareId AND dados.time < :timeBeg AND dados.time > :timeEnd');
             $stmt->bindValue(':shareId', $shareId);
-            $stmt->bindValue(':time', $time);
+            $stmt->bindValue(':timeEnd', $time); // até quanto tempo atrás será observado
+            $stmt->bindValue(':timeBeg', $timeBeg); // hora final da observação
             try{
                 $stmt->execute();
                 $data = [];

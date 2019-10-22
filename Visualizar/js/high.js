@@ -26,6 +26,14 @@ TODO: inserir o array de objetos na função series para gerar o gráfico.
 */
 $(document).ready(function () { // gera os gráficos
 
+    // recebe qual a data que o gráfico está trabalhando
+    let d = new Date(datesearch*1000);
+    d.toLocaleString();
+    let year = d.getFullYear();
+    let day = d.getDate();
+    let month = d.getMonth() + 1;
+    let dataGrafico = day+"/"+month+"/"+year;
+
 setTimeout(function () {
 
 
@@ -41,7 +49,7 @@ setTimeout(function () {
             },
 
             subtitle: {
-                text: 'Dados das ultimas 24 horas'
+                text: dataGrafico
             },
 
             yAxis: {
@@ -85,7 +93,7 @@ setTimeout(function () {
             }
 
         });
-    }, 5000);
+    }, 8000);
 
     setTimeout(function () {
 
@@ -102,7 +110,7 @@ setTimeout(function () {
             },
 
             subtitle: {
-                text: 'Dados das ultimas 24 horas'
+                text: dataGrafico
             },
 
             yAxis: {
@@ -145,6 +153,6 @@ setTimeout(function () {
             }
 
         });
-    }, 5000);
+    }, 12000);
 
 });

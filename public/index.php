@@ -291,17 +291,17 @@ $app->get('/getDispositivos', function (Request $request, Response $response){
 
 // recupera o shareID do dispositivo
 $app->get('/getDadosDia', function (Request $request, Response $response){
-    if (isTheseParametersAvailable(array('shareId'))) {
+    if (isTheseParametersAvailable(array('shareId', 'timestamp'))) {
         $headers = $request->getQueryParams();
 
-        //cadastra o Device
-        $idUsuario = $headers['idUsuario'];
+
+        $timestamp = $headers['timestamp'];
         $sharedId = $headers['shareId'];
 
         $db = new DbOperations();
         $responseData = array();
 
-        $result = $db->listarDadosDia($sharedId);
+        $result = $db->listarDadosDia($sharedId,$timestamp);
 
         if ($result == ERRO_BUSCA){
             $responseData['response'] = NO_CONTENT;

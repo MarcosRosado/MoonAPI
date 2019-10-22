@@ -9,11 +9,12 @@
 require_once "../../includes/Constants.php";
 
 $shareId = $_GET['shareId'];
+$timestamp = $_GET['timestamp'];
 
 
 try {
     // recupera os dados da API
-    $ch = curl_init(API_LOCAL."getDadosDia?shareId=".$shareId);
+    $ch = curl_init(API_LOCAL."getDadosDia?shareId=".$shareId."&timestamp=".$timestamp);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER,1 );
     $response = curl_exec($ch);
     curl_close($ch);

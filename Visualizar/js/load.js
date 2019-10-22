@@ -4,6 +4,7 @@ var SensorArrayUmid = []; // lista dos sensores de umidade
 let arr = []; // array temporário para processamento dos dados
 let fullDataUmid = []; // dados processados de umidade para o gráfico
 let fullDataTemp = []; // ||       ||       || temperatura      ||  ||  ||
+let datesearch;
 
 let h12 = 43200; // tempo em horas de meio dia‬
 let h24 = 86400;
@@ -11,24 +12,21 @@ let m20 = 1200;
 
 var Data;
 
-function findGetParameter(parameterName) {
-    var result = null,
-        tmp = [];
-    location.search
-        .substr(1)
-        .split("&")
-        .forEach(function (item) {
-            tmp = item.split("=");
-            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-        });
-    return result;
-}
 
-function getDados(paramVal){ // carrega os dados, e as listas de sensores
+
+function getDados(paramVal, timestamp){ // carrega os dados, e as listas de sensores
+
+    if (timestamp !== null) { // verifica se o campo de timestamp está vazio
+        datesearch = timestamp; // se não estiver, utiliza o timestamp informado
+    }
+    else { // caso contrario pega o timestamp das ultimas 24h
+        let someDate = new Date();
+        datesearch = Math.floor(someDate.getTime()/1000); // pega o epoch atual
+    }
     $.ajax({
         url:"../private/page_visualizar/visualizar.php",
         type:"get",
-        data:{"shareId":paramVal},
+        data:{"shareId":paramVal, 'timestamp':datesearch},
         success:function (result) {
             const response = jQuery.parseJSON(result);
 
@@ -107,7 +105,6 @@ function loadUmiGraph(){ // processa os dados do gráfico de umidade
 
 
     for (let i = 0; i < DataArray.length; i ++){
-        if (parseInt(DataArray[i][2]) + h24 >= curTimestamp) { // dados das ultimas 12 horas
             for (let elem in SensorArrayUmid) {
                 if (SensorArrayUmid[elem] === DataArray[i][3]) {
                     let d = new Date(parseInt(DataArray[i][2]) * 1000);
@@ -123,7 +120,6 @@ function loadUmiGraph(){ // processa os dados do gráfico de umidade
                     break;
                 }
             }
-        }
 
     }
     for (let elem in SensorArrayUmid){
@@ -143,7 +139,6 @@ function loadTempGraph(){ // processa os dados do gráfico de temperatura
 
 
     for (let i = 0; i < DataArray.length; i ++){
-        if (parseInt(DataArray[i][2]) + h24 >= curTimestamp) { // dados das ultimas 12 horas
             for (let elem in SensorArrayTemp) {
                 if (SensorArrayTemp[elem] === DataArray[i][3]) {
                     let d = new Date(parseInt(DataArray[i][2]) * 1000);
@@ -159,7 +154,6 @@ function loadTempGraph(){ // processa os dados do gráfico de temperatura
                     break;
                 }
             }
-        }
 
     }
     for (let elem in SensorArrayTemp){
@@ -184,23 +178,23 @@ function showPage() {
 
 $(document).ready(function () {
 
-
+    // recebe os parametros do header
     var paramVal = findGetParameter("shareId");
-    getDados(paramVal);
+    var timestamp = findGetParameter("timestamp");
+    getDados(paramVal, timestamp);
 
+    // aguarda o carregamento dos dados
     setTimeout(function () { // gera os gráficos
         loadTempGraph();
         loadUmiGraph();
         showPage();
-    }, 5000);
+    }, 8000);
 
 
-    setTimeout(function () { // gera os gráficos
-        $('#downloadData').click(function(){
-            downloadData(paramVal);
-        });
+    $('#downloadData').click(function(){
+        downloadData(paramVal);
+    });
 
-    }, 5000);
 
 
 });
