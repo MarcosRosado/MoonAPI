@@ -52,9 +52,9 @@
                                     <input id="dataUpdate" name="data" type="date" class="nav-link" />
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" onclick="reloadPageWithDate()">Escolher
+                                    <button class="nav-link active" onclick="reloadPageWithDate()">Selecionar
                                         <span class="sr-only">(current)</span>
-                                    </a>
+                                    </button>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -72,11 +72,11 @@
             </div>
             <!-- row -->
             <div class="row tm-content-row tm-mt-big">
-                <div class="tm-col tm-col-big">
+                <div class="tm-col tm-col-big" id = "tempDiv">
                         <h2 class="tm-block-title">Temperatura</h2>
                         <div id="tempChart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
                 </div>
-                <div class="tm-col tm-col-big">
+                <div class="tm-col tm-col-big" id="umidDiv">
                     <h2 class="tm-block-title">Umidade</h2>
                     <div id="umidChart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
                 </div>
@@ -94,8 +94,8 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <!-- https://jquery.com/download/ -->
     <!-- https://momentjs.com/ -->
-    <script src="js/utils.js?v.1.6"></script>
-    <script src="js/load.js?v1.2.1.12.108"></script>
+    <script src="js/utils.js?v.1.7"></script>
+    <script src="js/load.js?v1.2.1.12.111"></script>
     <script src="js/Chart.min.js"></script>
     <!-- http://www.chartjs.org/docs/latest/ -->
     <!-- https://fullcalendar.io/ -->

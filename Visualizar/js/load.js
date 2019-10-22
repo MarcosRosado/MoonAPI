@@ -63,8 +63,8 @@ function getDados(paramVal, timestamp){ // carrega os dados, e as listas de sens
                 //alert(response['message'][0]['valor']);
             }
             else{
-                console.log('Esse shareId não existe, foi modificado ou não possui nenhum dado, consulte o fornecedor para receber o novo link');
-                alert('Esse shareId não existe, foi modificado ou não possui nenhum dado, consulte o fornecedor para receber o novo link');
+                document.getElementById("tempDiv").style.display = "none";
+                console.log('O Gráfico de Umidade não possui valores, tente recarregar a página se achar que isso é um erro');
             }
         }
     });
@@ -85,8 +85,8 @@ function getDados(paramVal, timestamp){ // carrega os dados, e as listas de sens
                 //alert(response['message'][0]['valor']);
             }
             else{
-                console.log('Esse shareId não existe, foi modificado ou não possui nenhum dado, consulte o fornecedor para receber o novo link');
-                alert('Esse shareId não existe, foi modificado ou não possui nenhum dado, consulte o fornecedor para receber o novo link');
+                document.getElementById("umidDiv").style.display = "none";
+                console.log('O Gráfico de Umidade não possui valores, tente recarregar a página se achar que isso é um erro');
             }
         }
     });
@@ -106,7 +106,7 @@ function loadUmiGraph(){ // processa os dados do gráfico de umidade
 
     for (let i = 0; i < DataArray.length; i ++){
             for (let elem in SensorArrayUmid) {
-                if (SensorArrayUmid[elem] === DataArray[i][3]) {
+                if (SensorArrayUmid[elem] === DataArray[i][3] && DataArray[i][1] === "Umid") {
                     let d = new Date(parseInt(DataArray[i][2]) * 1000);
                     d.toLocaleString();
                     let year = d.getFullYear();
@@ -140,7 +140,7 @@ function loadTempGraph(){ // processa os dados do gráfico de temperatura
 
     for (let i = 0; i < DataArray.length; i ++){
             for (let elem in SensorArrayTemp) {
-                if (SensorArrayTemp[elem] === DataArray[i][3]) {
+                if (SensorArrayTemp[elem] === DataArray[i][3] && DataArray[i][1] === "Temp") {
                     let d = new Date(parseInt(DataArray[i][2]) * 1000);
                     d.toLocaleString();
                     let year = d.getFullYear();
