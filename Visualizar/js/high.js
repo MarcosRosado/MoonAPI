@@ -1,29 +1,4 @@
 
-/*
-
-
-################ cria um arrray de objetos ###################
-function getDefaultObjectAt(array, index)
-{
-    return array[index] = array[index] || {};
-}
-
-
-
-getDefaultObjectAt(fullData, 1).nome = "val";  // { prop: "val" } stored at index 1.
-
-
-// utilizar essa parte para gerar o array de dados,
-let fullData = [];
-
-fullData.push({"nome": "teste", "id": 1}); // insere um objeto a lista de objetos para os dados
-
-TODO: criar um array com o tamanho len da quantidade de sensores.
-TODO: recuperar a lista de de sensores pela API, agrupar os dados por sensores (foreach para lista de sensores)
-TODO: pegar as listas após a leitura de todos os dados, inserir em um array de objetos no formato acima.
-TODO: inserir o array de objetos na função series para gerar o gráfico.
-
-*/
 $(document).ready(function () { // gera os gráficos
 
     // recebe qual a data que o gráfico está trabalhando

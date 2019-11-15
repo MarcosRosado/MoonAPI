@@ -194,7 +194,7 @@ $app->post('/updateDeviceShareId', function (Request $request, Response $respons
 });
 
 
-// cadastra um novo dispositivo no banco de dados
+// insere os dados no disposivio
 $app->post('/inserirDado', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('hashDevice', 'valor', 'tipoSensor', 'tag'))){
         $requestData = $request->getParsedBody();
@@ -202,7 +202,7 @@ $app->post('/inserirDado', function (Request $request, Response $response){
         $db = new DbOperations();
         $responseData = array();
 
-        //cadastra o Device
+        //inserir os dados
         $hashDevice = $requestData['hashDevice'];
         $valor = $requestData['valor'];
         $tipoSensor = $requestData['tipoSensor'];
@@ -234,7 +234,7 @@ $app->post('/inserirDado', function (Request $request, Response $response){
 });
 
 
-// recupera o shareID do dispositivo
+// recupera o noem do usuário
 $app->get('/getNomeUsuario', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('idUsuario'))) {
         $headers = $request->getQueryParams();
@@ -261,7 +261,7 @@ $app->get('/getNomeUsuario', function (Request $request, Response $response){
 
 });
 
-// recupera o shareID do dispositivo
+// recupera o os dispositivos vinculados a um usuário
 $app->get('/getDispositivos', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('idUsuario'))) {
         $headers = $request->getQueryParams();
@@ -289,7 +289,7 @@ $app->get('/getDispositivos', function (Request $request, Response $response){
 });
 
 
-// recupera o shareID do dispositivo
+// recupera o dados das ultimas 24h da data limite definida
 $app->get('/getDadosDia', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('shareId', 'timestamp'))) {
         $headers = $request->getQueryParams();
@@ -318,7 +318,7 @@ $app->get('/getDadosDia', function (Request $request, Response $response){
 });
 
 
-// recupera o shareID do dispositivo
+// recupera os dados com base no shareID do dispositivo
 $app->get('/getDados', function (Request $request, Response $response){
     if (isTheseParametersAvailable(array('shareId'))) {
         $headers = $request->getQueryParams();

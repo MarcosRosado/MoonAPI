@@ -42,7 +42,7 @@ function getDados(paramVal, timestamp){ // carrega os dados, e as listas de sens
             }
             else{
                 console.log('Esse shareId não existe, foi modificado ou não possui nenhum dado, consulte o fornecedor para receber o novo link');
-                alert('Esse shareId não existe, foi modificado ou não possui nenhum dado, consulte o fornecedor para receber o novo link');
+                //alert('Não existem valores relacionados a essa data, escolha outro dia ou verifique o link de acesso com o fornecedor');
             }
         }
     });
